@@ -1,91 +1,457 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Shanti Mhatre</title>
+    <title>Interactive Resume - Shanti Mhatre</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed with a persistent sidebar for navigation and a main content area. This structure allows users (e.g., recruiters) to quickly jump to sections they're most interested in, such as 'Skills' or 'Experience', rather than scrolling through a linear document. The key interaction is the connection between the skills chart and the project/experience descriptions, allowing users to click a skill and see where it was applied. This directly answers the implicit question of "how do you know this skill?" by providing immediate, interactive evidence, making the resume more compelling and easier to synthesize. -->
+    <!-- Visualization & Content Choices: 
+        - Key Competencies (Soft Skills): Report Info -> Goal: Inform -> Viz: Styled HTML tags/badges -> Interaction: None -> Justification: More visually engaging than a bulleted list for quick scanning.
+        - Skill Sets (Hard Skills): Report Info -> Goal: Organize & Compare -> Viz: Grouped Horizontal Bar Chart -> Interaction: Click on a skill bar to highlight corresponding skills in the Experience/Projects section -> Justification: A bar chart provides a clean, organized, and quantitative-feeling overview of technical abilities. The click interaction creates a powerful link between abstract skills and concrete application. -> Library/Method: Chart.js (Canvas).
+        - Experience/Projects: Report Info -> Goal: Change (over time) & Inform -> Viz: Vertical timeline with distinct cards -> Interaction: Highlights skill tags when a skill is selected from the chart -> Justification: A timeline format is intuitive for chronological data, and cards provide organized containers for detailed information.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #38342E;
+        }
+        .accent-color { color: #A8763E; }
+        .accent-bg { background-color: #A8763E; }
+        .accent-border { border-color: #A8763E; }
+        .secondary-bg { background-color: #F5F1EB; }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #A8763E;
+            border-left-color: #A8763E;
+            background-color: #F5F1EB;
+        }
+        .skill-highlight {
+            background-color: #A8763E;
+            color: #FFFFFF;
+            padding: 0 4px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 500px;
+            max-height: 600px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 600px;
+            }
+        }
+    </style>
 </head>
-<body>
-    <h1>Shanti Mhatre</h1>
-    <img src="img/me.jpg" alt="My Photo" width="200">
+<body class="antialiased">
 
-    <h2>About Me</h2>
-    <p>
-        B.Tech graduate in Data Science with strong foundations in data analysis, visualization, web and app development, 
-        and emerging expertise in UI/UX design. Experienced in developing impactful projects using Python, ML, React Native, 
-        and data visualization tools. Hands-on exposure to DevOps and cybersecurity at BARC, with proven leadership in 
-        student organizations and event management. Passionate about using technology and design to solve problems, 
-        enhance user experiences, and deliver data-driven insights.
-    </p>
-    <hr />
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <aside class="w-full md:w-64 lg:w-72 bg-white md:border-r border-gray-200/80 p-6 md:fixed md:h-screen">
+            <div class="text-center md:text-left">
+                <h1 class="text-2xl lg:text-3xl font-bold accent-color">Shanti Mhatre</h1>
+                <p class="text-sm text-gray-600 mt-1">Data Science Student</p>
+                <p class="text-sm text-gray-600">Amateur Graphics Designer</p>
+            </div>
 
-    <h2>Education</h2>
-    <h3>Bachelor of Technology (B.Tech) in Data Science</h3>
-    <ul>
-        <li>Usha Mittal Institute of Technology, SNDT Women’s University – Juhu</li>
-        <li>CGPA: 7.1</li>
-        <li>Graduated: 2025</li>
-    </ul>
+            <nav id="navigation" class="mt-8 space-y-2">
+                <a href="#overview" class="nav-link block font-medium p-3 rounded-r-lg">Overview</a>
+                <a href="#experience" class="nav-link block font-medium p-3 rounded-r-lg">Experience & Projects</a>
+                <a href="#skills" class="nav-link block font-medium p-3 rounded-r-lg">Skills</a>
+                <a href="#education" class="nav-link block font-medium p-3 rounded-r-lg">Education & Certs</a>
+                <a href="#leadership" class="nav-link block font-medium p-3 rounded-r-lg">Leadership</a>
+            </nav>
 
-    <h3>Higher Secondary Certificate (HSC – PCM/CS)</h3>
-    <ul>
-        <li>Atomic Energy Junior College (AEJC) – Maharashtra Board</li>
-        <li>Percentage: 82%</li>
-    </ul>   
+            <div class="mt-8 pt-6 border-t border-gray-200/80 text-sm space-y-3">
+                <p class="flex items-center"><span class="w-6 mr-2">📞</span> +91 9969779181</p>
+                <p class="flex items-center"><span class="w-6 mr-2">✉️</span> mhatr3s@gmail.com</p>
+                <p class="flex items-center"><span class="w-6 mr-2">📍</span> Mumbai, India</p>
+            </div>
+        </aside>
 
-    <h3>Secondary School Certificate (CBSE)</h3>
-    <ul>
-        <li>Atomic Energy Central School-1</li>
-        <li>Percentage: 73.8%</li>
-    </ul>
-    <hr />
+        <main class="flex-1 md:ml-64 lg:ml-72 p-6 md:p-10 lg:p-12">
+            
+            <section id="overview" class="mb-16">
+                <h2 class="text-3xl font-bold border-b-2 accent-border pb-2 mb-6">Overview</h2>
+                <div class="prose max-w-none text-gray-700">
+                    <p>This section provides a high-level summary of Shanti Mhatre's profile. It includes a professional summary outlining her technical background, design aspirations, and collaborative spirit, alongside a list of key competencies that highlight her valuable soft skills in leadership, planning, and communication.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-lg mb-3 accent-color">Professional Summary</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            A BTech Data Science graduate student with a strong foundation in web and app development, data analysis, and visualization. Currently seeking to expand expertise in UI/UX design through coursework. Aspiring to apply technical, analytical, and design skills to deliver impactful solutions and support informed decisions. Passionate about leveraging technology and visualization to tackle challenges and achieve success in collaborative teams.
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-lg mb-3 accent-color">Key Competencies</h3>
+                        <div id="competencies-container" class="flex flex-wrap gap-2">
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <h2>Work Experience</h2>
-    <h3>Cyber Security / DevOps Intern – BARC</h3>
-    <p><em>March 2025 – April 2025</em></p>
-    <ul>
-        <li>Established an offline centralized logging system using ELK Stack and Wazuh on Rocky Linux.</li>
-        <li>Installed and configured Logstash, Elasticsearch, Kibana, and Wazuh for log management and security monitoring.</li>
-        <li>Assisted in log monitoring and system analysis.</li>
-    </ul>
+            <section id="experience" class="mb-16">
+                <h2 class="text-3xl font-bold border-b-2 accent-border pb-2 mb-6">Experience & Projects</h2>
+                 <div class="prose max-w-none text-gray-700 mb-8">
+                    <p>This area details Shanti's hands-on professional experience and personal projects. It's presented as a timeline to showcase her journey and the practical application of her skills in real-world scenarios, from leading a social media team to developing a centralized logging system and creating mobile applications.</p>
+                </div>
+                <div id="experience-container" class="relative border-l-2 accent-border pl-8 space-y-12">
+                </div>
+            </section>
 
-    <h3>Social Media Team Lead – International Conference on Climate Change (SNDT WU)</h3>
-    <p><em>Dec 2024 – Present</em></p>
-    <ul>
-        <li>Led a 56-member team to create and manage content across multiple platforms.</li>
-        <li>Boosted engagement rates by 20% through creative content strategies and analytics.</li>
-        <li>Expanded Instagram presence: <a href="https://instagram.com/sndtwu_iccc2025" target="_blank">@sndtwu_iccc2025</a></li>
-    </ul>
-    <hr />
+            <section id="skills" class="mb-16">
+                <h2 class="text-3xl font-bold border-b-2 accent-border pb-2 mb-6">Skills & Toolsets</h2>
+                <div class="prose max-w-none text-gray-700 mb-8">
+                    <p>Here you can explore a visual breakdown of Shanti's technical skills. The chart below groups her abilities into categories like Development, Data & Visualization, and Design. This is an interactive chart: click on any skill bar to highlight the specific projects and work experiences in the section above where that skill was applied. This helps to connect her theoretical knowledge with practical application.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="education" class="mb-16">
+                <h2 class="text-3xl font-bold border-b-2 accent-border pb-2 mb-6">Education & Certifications</h2>
+                <div class="prose max-w-none text-gray-700 mb-8">
+                    <p>This section outlines Shanti's formal academic background and the professional certifications she has earned. It covers her Bachelor's degree in Data Science and includes a variety of certifications from respected institutions like IBM and PwC, demonstrating a commitment to continuous learning in fields such as AI, data analytics, and software engineering.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 accent-color">Education</h3>
+                        <div id="education-container" class="space-y-4"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 accent-color">Certifications</h3>
+                        <div id="certifications-container" class="space-y-4"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="leadership" class="mb-16">
+                <h2 class="text-3xl font-bold border-b-2 accent-border pb-2 mb-6">Leadership & Extracurriculars</h2>
+                <div class="prose max-w-none text-gray-700 mb-8">
+                    <p>Beyond technical skills, this section highlights Shanti's leadership roles and volunteer activities. These experiences, such as serving as Graphics Head for the Student Council and volunteering for NSS, demonstrate her teamwork, organizational skills, and community involvement.</p>
+                </div>
+                <div id="leadership-container" class="space-y-6"></div>
+            </section>
 
-    <h2>Projects</h2>
-    <ul>
-        <li><strong>Juno: Maternal Health Tracker</strong> – Pregnancy & postpartum tracking app in React Native. 
-            <a href="https://github.com/yash-vi/juno-pregnancy-journal.git" target="_blank">GitHub</a></li>
-        <li><strong>Personal Fitness Tracker</strong> – Python & ML (SVM, RF, Logistic Regression) with Streamlit. 
-            <a href="https://github.com/zachyj/Implementation-of-Personal-Fitness-Tracker-using-Py.git" target="_blank">GitHub</a></li>
-        <li><strong>ZingX</strong> – Online dating website based on movie genre preferences.</li>
-    </ul>
-    <hr />
+        </main>
+    </div>
 
-    <h2>Skills</h2>
-    <ul>
-        <li><strong>Programming:</strong> Python, JavaScript, HTML/CSS, React Native, C, C++</li>
-        <li><strong>Data & Visualization:</strong> Power BI, Tableau, Jupyter, Google Colab</li>
-        <li><strong>DevOps & Security:</strong> Linux, ElasticSearch, Logstash, Kibana, Wazuh</li>
-        <li><strong>Design & Creative:</strong> Figma, Canva, Kittl, Video Editing</li>
-        <li><strong>Other:</strong> Microsoft Apps, MongoDB, AI Tools</li>
-    </ul>
-    <hr />
+    <script>
+        const resumeData = {
+            competencies: [
+                "Great Leadership Skills", "Strategic planner", "Cost-benefit analysis",
+                "Event Management", "Critical thinking skills", "Good communication skills",
+                "Team collaboration", "Resilience and adaptability", "Great organisational skills"
+            ],
+            experience: [
+                {
+                    type: 'Project',
+                    title: 'Juno: Advancing Maternal Health',
+                    date: 'May 2025',
+                    description: 'A pregnancy and postpartum tracking app for the mother and their partner.',
+                    skills: ['React Native']
+                },
+                {
+                    type: 'Internship',
+                    title: 'Social Media Team Lead',
+                    company: 'International Conference on Climate Change (SNDT WU)',
+                    date: 'Dec 2024 - May 2025',
+                    description: 'Managed a team of 56 people and created content across multiple social media platforms, boosting engagement rates by 20%.',
+                    skills: []
+                },
+                {
+                    type: 'Internship',
+                    title: 'Cyber Security/DevOps',
+                    company: 'Nuclear Power Corporation of India Limited (BARC)',
+                    date: 'March 2025 - April 2025',
+                    description: 'Established a completely offline centralized logging system using ELK Stack and Wazuh on Rocky Linux. Installed and configured Logstash, Elasticsearch, Kibana, and Wazuh for log management and security monitoring.',
+                    skills: ['ELK Stack', 'Wazuh', 'Rocky Linux']
+                },
+                {
+                    type: 'Project',
+                    title: 'AI: Transformative Learning with TechSaksham',
+                    company: 'AICTE',
+                    date: 'Feb 2025 - March 2025',
+                    description: 'Implementation of Personal Fitness Tracker using Python and ML to provide personalized fitness insights. By analyzing models like SVM, RF and Logistic Regression and built in StreamLit.',
+                    skills: ['Python']
+                },
+                {
+                    type: 'Project',
+                    title: 'ZingX',
+                    date: 'Dec 2023',
+                    description: 'Online Dating Website based on movie genre preference.',
+                    skills: []
+                }
+            ],
+            skills: {
+                "Development": ["HTML/CSS", "JavaScript", "React JS", "Node", "React Native", "Python", "C, C++"],
+                "Data & Visualization": ["SQL", "MongoDB", "Jupyter", "Google Colab", "Tableau", "Power BI"],
+                "DevOps & Security": ["Linux/Rocky Linux", "ELK Stack", "Wazuh"],
+                "Design & Creative": ["Canva", "Figma", "Kittl", "Video Editing", "Al Tools"]
+            },
+            education: [
+                {
+                    degree: 'Bachelor of Technology in Data Science',
+                    school: 'Usha Mittal Institute of Technology, SNDTWU',
+                    detail: 'CGPA - 7.1'
+                },
+                {
+                    degree: 'Higher Secondary Certificate (MhHSC)',
+                    school: 'Atomic Energy Junior College (AEJC)',
+                    detail: 'PCM/CS - 82%'
+                },
+                {
+                    degree: 'Secondary School Certificate (CBSE)',
+                    school: 'Atomic Energy Central School-1',
+                    detail: '73.8%'
+                }
+            ],
+            certifications: [
+                { name: 'Artificial Intelligence Fundamentals', issuer: 'IBM' },
+                { name: 'Power BI Job Simulation', issuer: 'PwC Switzerland (Forage)' },
+                { name: 'Software Engineering Job Simulation', issuer: 'Electronic Arts (Forage)' },
+                { name: 'Data Analytics ChatGPT with Power BI', issuer: 'Infosys Foundation' },
+                { name: 'The Complete Full-Stack Web Development Bootcamp', issuer: 'Udemy' }
+            ],
+            leadership: [
+                { role: 'Graphics Head', org: 'Student Council', date: 'Jul 2023 - Aug 2024' },
+                { role: 'Elected Student Representative | Junior Council', org: 'Student Council', date: 'Jul 2022 - Jun 2023' },
+                { role: 'Junior Council', org: 'Sports Council', date: 'Jan 2022 - Jun 2022' },
+                { role: 'Volunteer', org: 'NSS', date: '2022-2024' },
+                { role: 'Volunteer', org: 'PetFed', date: 'Feb 2025' }
+            ]
+        };
 
-    <h2>Certifications</h2>
-    <ul>
-        <li>Artificial Intelligence Fundamentals – IBM</li>
-        <li>Power BI Job Simulation – PwC Switzerland (Forage)</li>
-        <li>Software Engineering Job Simulation – Electronic Arts (Forage)</li>
-        <li>Introduction to Basic Game Development using Scratch – Coursera Project Network</li>
-        <li>Data Analytics ChatGPT with Power BI – Infosys Foundation</li>
-    </ul>
-    <hr />
+        function populateContent() {
+            const competenciesContainer = document.getElementById('competencies-container');
+            resumeData.competencies.forEach(c => {
+                const tag = document.createElement('span');
+                tag.className = 'secondary-bg text-sm font-medium px-3 py-1 rounded-full';
+                tag.textContent = c;
+                competenciesContainer.appendChild(tag);
+            });
+
+            const experienceContainer = document.getElementById('experience-container');
+            resumeData.experience.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'relative';
+                
+                const dot = document.createElement('div');
+                dot.className = 'absolute -left-[38px] top-1 h-4 w-4 rounded-full accent-bg border-4 border-white';
+                div.appendChild(dot);
+                
+                let html = `<p class="text-xs accent-color font-semibold">${item.date}</p>
+                            <h4 class="font-bold text-lg mt-1">${item.title}</h4>
+                            ${item.company ? `<p class="text-md font-medium text-gray-600">${item.company}</p>` : ''}
+                            <p class="mt-2 text-gray-700">`;
+                
+                let desc = item.description;
+                if(item.skills.length > 0) {
+                    item.skills.forEach(skill => {
+                        const regex = new RegExp(`(${skill})`, 'gi');
+                        desc = desc.replace(regex, `<span class="skill-tag" data-skill="${skill}">$1</span>`);
+                    });
+                }
+                html += `${desc}</p>`;
+                div.innerHTML += html;
+                experienceContainer.appendChild(div);
+            });
+
+            const educationContainer = document.getElementById('education-container');
+            resumeData.education.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white p-4 rounded-lg shadow-sm';
+                div.innerHTML = `<h5 class="font-bold">${item.degree}</h5>
+                                 <p class="text-sm text-gray-600">${item.school}</p>
+                                 <p class="text-sm text-gray-500">${item.detail}</p>`;
+                educationContainer.appendChild(div);
+            });
+
+            const certificationsContainer = document.getElementById('certifications-container');
+            resumeData.certifications.forEach(item => {
+                 const div = document.createElement('div');
+                div.className = 'bg-white p-4 rounded-lg shadow-sm';
+                div.innerHTML = `<h5 class="font-bold">${item.name}</h5>
+                                 <p class="text-sm text-gray-600">${item.issuer}</p>`;
+                certificationsContainer.appendChild(div);
+            });
+
+            const leadershipContainer = document.getElementById('leadership-container');
+            resumeData.leadership.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white p-4 rounded-lg shadow-sm flex justify-between items-center';
+                div.innerHTML = `<div>
+                                    <h5 class="font-bold">${item.role}</h5>
+                                    <p class="text-sm text-gray-600">${item.org}</p>
+                                 </div>
+                                 <span class="text-xs font-medium secondary-bg px-2 py-1 rounded-full">${item.date}</span>`;
+                leadershipContainer.appendChild(div);
+            });
+        }
+        
+        let skillsChart;
+        function createSkillsChart() {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const allSkills = Object.values(resumeData.skills).flat();
+            const datasets = Object.keys(resumeData.skills).map((category, index) => {
+                const colors = [
+                    'rgba(168, 118, 62, 0.7)',
+                    'rgba(75, 85, 99, 0.7)',
+                    'rgba(217, 119, 6, 0.7)',
+                    'rgba(107, 114, 128, 0.7)'
+                ];
+                const hoverColors = [
+                    'rgba(168, 118, 62, 1)',
+                    'rgba(75, 85, 99, 1)',
+                    'rgba(217, 119, 6, 1)',
+                    'rgba(107, 114, 128, 1)'
+                ];
+
+                return {
+                    label: category,
+                    data: resumeData.skills[category].map(skill => 1), 
+                    backgroundColor: colors[index % colors.length],
+                    hoverBackgroundColor: hoverColors[index % hoverColors.length],
+                    category: category,
+                    skills: resumeData.skills[category]
+                };
+            });
+
+            const labels = [];
+            datasets.forEach(ds => {
+                labels.push(...ds.skills);
+            });
+            
+            const flatData = [];
+            const backgroundColors = [];
+            const hoverBackgroundColors = [];
+            const skillsToLabels = [];
+            
+            datasets.forEach(ds => {
+                ds.skills.forEach(skill => {
+                    flatData.push(1);
+                    backgroundColors.push(ds.backgroundColor);
+                    hoverBackgroundColors.push(ds.hoverBackgroundColor);
+                    skillsToLabels.push(skill);
+                });
+            });
+
+            skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: skillsToLabels,
+                    datasets: [{
+                        data: flatData,
+                        backgroundColor: backgroundColors,
+                        hoverBackgroundColor: hoverBackgroundColors,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false,
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                font: {
+                                    size: 14,
+                                },
+                                color: '#38342E'
+                            },
+                             grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            ctx.canvas.onclick = (event) => {
+                const activePoints = skillsChart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+                if (activePoints.length > 0) {
+                    const selectedIndex = activePoints[0].index;
+                    const selectedSkill = skillsChart.data.labels[selectedIndex];
+                    toggleSkillHighlight(selectedSkill);
+                }
+            };
+        }
+        
+        let activeSkill = null;
+        function toggleSkillHighlight(skill) {
+            const skillTags = document.querySelectorAll('.skill-tag');
+            
+            if (activeSkill === skill) {
+                skillTags.forEach(tag => tag.classList.remove('skill-highlight'));
+                activeSkill = null;
+                return;
+            }
+            
+            activeSkill = skill;
+            skillTags.forEach(tag => {
+                if (tag.dataset.skill.toLowerCase() === skill.toLowerCase()) {
+                    tag.classList.add('skill-highlight');
+                } else {
+                    tag.classList.remove('skill-highlight');
+                }
+            });
+        }
+
+
+        function setupNavigation() {
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('#navigation a');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateContent();
+            createSkillsChart();
+            setupNavigation();
+        });
+    </script>
 </body>
 </html>
